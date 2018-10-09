@@ -1,0 +1,20 @@
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  grok {
+    match => { "message" => "%{MONTH}  %{MONTHDAY} %{HOUR}:%{MINUTE}:%{SECOND} %{HOSTNAME} %{WORD}: %{GREEDYDATA}" }
+  }
+}
+
+output {
+  elasticsearch { 
+    hosts => ["localhost:9200"] 
+    index => ["messages-%{+YYYY.MM.dd}"]
+  }
+}
+
+---------------------------------------
