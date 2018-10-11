@@ -70,3 +70,24 @@ output {
   }
 }
 -----------------------------------------------------------
+
+
+MULTILINE CONFIG
+--------------------------------------------------------------
+filebeat.prospectors:
+- type: log
+  paths:
+    - /var/log/messages
+  fields:
+    logtype: system
+- type: log
+  paths: 
+    - /opt/apache-tomcat-9.0.12/logs/catalina.out  
+  fields:
+    logtype: tomcat
+  multiline.pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
+  multiline.negate: true
+  multiline.match: after
+output.logstash:
+  hosts: ["elk:5044"]
+----------------------------------------------------
